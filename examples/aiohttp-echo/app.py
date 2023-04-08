@@ -68,8 +68,9 @@ class Handler:
             
             if event.message.text == "告訴我秘密":
                 reply_text = "中國娃娃魚"
-           else:
-                reply_text = "很抱歉我聽不懂你說的東西，請你換個方式再問一次"
+            else:
+    reply_text = "很抱歉我聽不懂你說的東西，請你換個方式再問一次"
+
 
             await self.line_bot_api.reply_message(
                 event.reply_token,
