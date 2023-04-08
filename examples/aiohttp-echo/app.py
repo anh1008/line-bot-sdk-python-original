@@ -65,9 +65,20 @@ class Handler:
                 continue
             if not isinstance(event.message, TextMessage):
                 continue
-            
-            if event.message.text == "告訴我秘密":
-                reply_text = "中國娃娃魚"
+            #位置
+             if event.message.text == "蟾蜍山在哪裡":
+                location_message = LocationSendMessage(
+                    title='蟾蜍山',
+                    address='蟾蜍山',
+                    latitude=25.150481,
+                    longitude=121.778013
+                )
+                reply_text = '蟾蜍山在這裡'
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    [TextSendMessage(text=reply_text), location_message]
+                )
+                
             else:
                 reply_text = "很抱歉我聽不懂你說的東西，請你換個方式再問一次"
 
