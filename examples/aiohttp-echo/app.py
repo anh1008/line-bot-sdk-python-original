@@ -66,17 +66,17 @@ class Handler:
             if not isinstance(event.message, TextMessage):
                 continue
             
-             if event.message.text == "告訴我秘密":
-                reply_text = "中國娃娃魚"           
+            if event.message.text == "告訴我秘密":
+                reply_text = "中國娃娃魚"
             else:
-                reply_text = '很抱歉我聽不懂你在說甚麼，請你換個方式再問一次'
-                await self.line_bot_api.reply_message(
-                    event.reply_token,
-                    TextSendMessage(text=reply_text)
-                )
+                reply_text = "很抱歉我聽不懂你在說甚麼，請你換個方式再問一次"
+
+            await self.line_bot_api.reply_message(
+                event.reply_token,
+                TextSendMessage(text=reply_text)
+            )
 
         return web.Response(text="OK\n")
-
 async def main(port=8000):
     session = aiohttp.ClientSession()
     async_http_client = AiohttpAsyncHttpClient(session)
