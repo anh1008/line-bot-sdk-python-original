@@ -61,57 +61,33 @@ class Handler:
             return web.Response(status=400, text='Invalid signature')
 
         for event in events:
-            
             if not isinstance(event, MessageEvent):
-    continue
-if not isinstance(event.message, TextMessage):
-    buttons_template_message = TemplateSendMessage(
-        alt_text='請選擇職業',
-        template=ButtonsTemplate(
-            title='請選擇職業',
-            text='請選擇以下職業',
-            actions=[
-                MessageAction(
-                    label='職業1',
-                    text='職業1'
-                ),
-                MessageAction(
-                    label='職業2',
-                    text='職業2'
-                ),
-                MessageAction(
-                    label='職業3',
-                    text='職業3'
-                ),
-                MessageAction(
-                    label='職業4',
-                    text='職業4'
+                continue
+            if not isinstance(event.message, TextMessage):
+                continue
+            
+             if event.message.text == "告訴我秘密":
+                reply_text = "中國娃娃魚"           
+             elif event.message.text == "蟾蜍山在哪裡？":
+                location_message = LocationSendMessage(
+                    title='蟾蜍山',
+                    address='蟾蜍山',
+                    latitude=25.150481,
+                    longitude=121.778013
                 )
-            ]
-        )
-    )
-    await self.line_bot_api.reply_message(
-        event.reply_token,
-        buttons_template_message
-    )
-    continue
+                reply_text = '蟾蜍山的位置在這裡'
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    [TextSendMessage(text=reply_text), location_message]
+                )
+            else:
+                reply_text = '很抱歉我聽不懂你在說甚麼，請你換個方式再問一次'
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=reply_text)
+                )
 
-if event.message.text == "職業1":
-    reply_text = "你選擇了職業1"
-elif event.message.text == "職業2":
-    reply_text = "你選擇了職業2"
-elif event.message.text == "職業3":
-    reply_text = "你選擇了職業3"
-elif event.message.text == "職業4":
-    reply_text = "你選擇了職業4"
-else:
-    reply_text = "很抱歉我聽不懂你說的東西，請你換個方式再問一次"
-
-await self.line_bot_api.reply_message(
-    event.reply_token,
-    TextSendMessage(text=reply_text)
-)
- return web.Response(text="OK\n")
+        return web.Response(text="OK\n")
 
 async def main(port=8000):
     session = aiohttp.ClientSession()
