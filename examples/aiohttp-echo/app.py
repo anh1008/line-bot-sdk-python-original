@@ -65,10 +65,15 @@ class Handler:
                 continue
             if not isinstance(event.message, TextMessage):
                 continue
+            
+            if event.message.text == "告訴我秘密":
+                reply_text = "中國娃娃魚"
+            else:
+                reply_text = event.message.text
 
             await self.line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=event.message.text)
+                TextSendMessage(text=reply_text)
             )
 
         return web.Response(text="OK\n")
