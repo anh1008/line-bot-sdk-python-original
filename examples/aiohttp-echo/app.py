@@ -73,7 +73,7 @@ class Handler:
 
             await self.line_bot_api.reply_message(
                 event.reply_token,
-                TextSendMessage(text=reply_text)
+                TextSendMessage(text='很抱歉我聽不懂你說的東西，請你換個方式再問一次')
             )
 
         return web.Response(text="OK\n")
