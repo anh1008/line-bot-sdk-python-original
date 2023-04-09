@@ -68,9 +68,9 @@ class Handler:
             
             if "秘密" in event.message.text:
                 reply_text = "中國娃娃魚"
-            if re.search(r'\b營業時間\b', event.message.text):
+            elif re.search(r'\b營業時間\b', event.message.text):
                 reply_text = "以下是營業資訊:\n開放時間:\n週二至週六\n10:00-12:00 / 13:00-17:00\n※如遇颱風等災害，依臺北市政府公布停班標準配合休館；其餘休館時間依公告為主。\n\n固定休館:\n週日、週一、國定假日\n※免費參觀，不需購票\n注意事項:\n-蟾蜍山大客廳全面禁菸。\n-寵物請勿落地，導盲犬不在此限。\n-聚落巷弄除一般參觀拍攝外，任何機關團體、公司行號拍攝影片或廣告，請向台北市電影委員會提出申請。"
-            if re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b|\b蟾蜍山在哪裡\b', event.message.text):
+            elif re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b|\b蟾蜍山在哪裡\b', event.message.text):
                 if event.message.text == "蟾蜍山在哪裡":
                     location_message = LocationSendMessage(
                         title='蟾蜍山',
