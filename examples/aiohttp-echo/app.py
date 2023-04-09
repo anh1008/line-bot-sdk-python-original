@@ -65,25 +65,30 @@ class Handler:
                 continue
             if not isinstance(event.message, TextMessage):
                 continue
-            
+
             if "秘密" in event.message.text:
                 reply_text = "中國娃娃魚"
-            #elif re.search(r'\b營業時間\b', event.message.text):
-            elif "營業時間" in event.message.text:
+            if "營業時間" in event.message.text:
+                reply_text = "以下是營業資訊:\n開放時間:\n週二至週六\n10:00-12:00 / 13:00-17:00"
+            # elif re.search(r'\b營業時間\b', event.message.text):
+            if "時間" in event.message.text:
                 reply_text = "以下是營業資訊:\n開放時間:\n週二至週六\n10:00-12:00 / 13:00-17:00\n※如遇颱風等災害，依臺北市政府公布停班標準配合休館；其餘休館時間依公告為主。\n\n固定休館:\n週日、週一、國定假日\n※免費參觀，不需購票\n注意事項:\n-蟾蜍山大客廳全面禁菸。\n-寵物請勿落地，導盲犬不在此限。\n-聚落巷弄除一般參觀拍攝外，任何機關團體、公司行號拍攝影片或廣告，請向台北市電影委員會提出申請。"
-            #elif re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b|\b蟾蜍山在哪裡\b', event.message.text):
-            elif "位置" in event.message.text:
-                #if event.message.text == "蟾蜍山在哪裡":
-                    location_message = LocationSendMessage(
-                        title='蟾蜍山',
-                        address='蟾蜍山',
-                        latitude=25.150481,
-                        longitude=121.778013
-                    )
-                    await self.line_bot_api.reply_message(
-                        event.reply_token,
-                        location_message
-                    )
+            # elif re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b|\b蟾蜍山在哪裡\b', event.message.text):
+            if "蟾蜍山" in event.message.text and "在哪裡" in event.message.text:
+                #回傳google地圖的連結做測試
+                 reply_text = "https://goo.gl/maps/cRfdA2Bequi2dXzb7"
+            if "位置" in event.message.text:
+                # if event.message.text == "蟾蜍山在哪裡":
+                location_message = LocationSendMessage(
+                    title='蟾蜍山',
+                    address='蟾蜍山',
+                    latitude=25.150481,
+                    longitude=121.778013
+                )
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    location_message
+                )
             else:
                 reply_text = "很抱歉我聽不懂你在說甚麼，請你換個方式再問一次"
 
