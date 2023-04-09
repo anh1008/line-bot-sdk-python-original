@@ -68,6 +68,35 @@ class Handler:
             
             if event.message.text == "告訴我秘密":
                 reply_text = "中國娃娃魚"
+            #確認排版會不會跑掉
+            elif event.message.text == "營業時間":
+                reply_text = "以下是營業資訊:
+                        開放時間:
+                        週二至週六
+                        10:00-12:00 / 13:00-17:00
+                        ※如遇颱風等災害，依臺北市政府公布停班標準配合休館；其餘休館時間依公告為主。
+
+                        固定休館:
+                        週日、週一、國定假日
+                        ※免費參觀，不需購票
+
+                        注意事項:
+                        -蟾蜍山大客廳全面禁菸。
+                        -寵物請勿落地，導盲犬不在此限。
+                        -聚落巷弄除一般參觀拍攝外，任何機關團體、公司行號拍攝影片或廣告，請向台北市電影委員會提出申請。"
+            #測試前面有任意字元會如何搜尋，問題可會是:我想知道蟾蜍山的位置、蟾蜍山在哪裡
+            elif re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b', event.message.text):
+                if event.message.text == "蟾蜍山在哪裡":
+                    location_message = LocationSendMessage(
+                        title='蟾蜍山',
+                        address='蟾蜍山',
+                        latitude=25.150481,
+                        longitude=121.778013
+                    )
+                    await self.line_bot_api.reply_message(
+                        event.reply_token,
+                        location_message
+                     )
             else:
                 reply_text = "很抱歉我聽不懂你在說甚麼，請你換個方式再問一次"
 
