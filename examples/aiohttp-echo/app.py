@@ -68,8 +68,8 @@ class Handler:
             
             if event.message.text == "告訴我秘密":
                 reply_text = "中國娃娃魚"
-            #確認排版會不會跑掉
-            elif event.message.text == "營業時間":
+            #確認排版會不會跑掉還有確認我想知道營業時間會不會觸發
+            elif re.search(r'\b營業時間\b', event.message.text):
                 reply_text = "以下是營業資訊:
                         開放時間:
                         週二至週六
