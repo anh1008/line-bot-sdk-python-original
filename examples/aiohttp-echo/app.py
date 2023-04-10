@@ -85,6 +85,8 @@ class Handler:
                     latitude=25.150481,
                     longitude=121.778013
                 )
+                #測試位置有沒有反應
+                reply_text = "已觸發位置條件"
                 await self.line_bot_api.reply_message(
                     event.reply_token,
                     location_message
