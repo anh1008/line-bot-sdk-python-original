@@ -31,9 +31,7 @@ from linebot.aiohttp_async_http_client import AiohttpAsyncHttpClient
 from linebot.exceptions import (
     InvalidSignatureError
 )
-from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-)
+from linebot.models import *
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -75,21 +73,51 @@ class Handler:
                 reply_text = "以下是營業資訊:\n開放時間:\n週二至週六\n10:00-12:00 / 13:00-17:00\n※如遇颱風等災害，依臺北市政府公布停班標準配合休館；其餘休館時間依公告為主。\n\n固定休館:\n週日、週一、國定假日\n※免費參觀，不需購票\n注意事項:\n-蟾蜍山大客廳全面禁菸。\n-寵物請勿落地，導盲犬不在此限。\n-聚落巷弄除一般參觀拍攝外，任何機關團體、公司行號拍攝影片或廣告，請向台北市電影委員會提出申請。"
             # elif re.search(r'\b蟾蜍山\b|\b蟾蜍山的位置\b|\b蟾蜍山在哪裡\b', event.message.text):
             elif "蟾蜍山" in event.message.text and "在哪裡" in event.message.text:
-                #回傳google地圖的連結做測試
-                 reply_text = "https://goo.gl/maps/cRfdA2Bequi2dXzb7"
-            elif "位置" in event.message.text:
+                # 回傳google地圖的連結做測試
+                reply_text = "https://goo.gl/maps/cRfdA2Bequi2dXzb7"
+            elif "蟾蜍山" in event.message.text and "位置" in event.message.text:
+                # 測試位置有沒有反應
+                reply_text = "已觸發位置條件"
+                
                 # if event.message.text == "蟾蜍山在哪裡":
                 location_message = LocationSendMessage(
-                    title='蟾蜍山',
-                    address='蟾蜍山',
-                    latitude=25.150481,
-                    longitude=121.778013
+                    title='蟾蜍山', address='蟾蜍山', latitude=25.150481, longitude=121.778013)
+                
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=reply_text)
                 )
-                #測試位置有沒有反應
-                reply_text = "已觸發位置條件"
                 await self.line_bot_api.reply_message(
                     event.reply_token,
                     location_message
+                )
+            elif "問題" in event.message.text and "選單" in event.message.text:
+                buttons_template_message = TemplateSendMessage(
+                    alt_text='Buttons template',
+                    template=ButtonsTemplate(
+                        thumbnail_image_url='https://www.google.com/imgres?imgurl=http%3A%2F%2Fmeda.ntou.edu.tw%2Fmpedia%2Fthumb%2F1-0317-picture2_480.jpg&tbnid=Q8i9djioZtShwM&vet=12ahUKEwjIkMWC1J7-AhXBUt4KHc1BAR8QMygAegUIARDGAQ..i&imgrefurl=http%3A%2F%2Fmeda.ntou.edu.tw%2Fmpedia%2F%3Ft%3D1%26i%3D0317&docid=19oB1m2iB_i9VM&w=480&h=642&itg=1&q=%E4%B8%AD%E5%9C%8B%E5%A8%83%E5%A8%83%E9%AD%9A&ved=2ahUKEwjIkMWC1J7-AhXBUt4KHc1BAR8QMygAegUIARDGAQ',
+                        title='中國娃娃魚',
+                        text='Please select',
+                        actions=[
+                            PostbackAction(
+                                label='postback',
+                                display_text='postback text',
+                                data='action=buy&itemid=1'
+                            ),
+                            MessageAction(
+                                label='message',
+                                text='測試'
+                            ),
+                            URIAction(
+                                label='uri',
+                                uri='https://zh.wikipedia.org/zh-tw/%E4%B8%AD%E5%9C%8B%E5%A4%A7%E9%AF%A2'
+                            )
+                        ]
+                    )
+                )
+                await self.line_bot_api.reply_message(
+                    event.reply_token,
+                    buttons_template_message
                 )
             else:
                 reply_text = "很抱歉我聽不懂你在說甚麼，請你換個方式再問一次"
@@ -100,6 +128,7 @@ class Handler:
             )
 
         return web.Response(text="OK\n")
+    
 async def main(port=8000):
     session = aiohttp.ClientSession()
     async_http_client = AiohttpAsyncHttpClient(session)
